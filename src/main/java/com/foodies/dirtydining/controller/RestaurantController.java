@@ -13,6 +13,7 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
+    // Test
     @GetMapping
     @ResponseBody
     public Map<String, Object> getNearRestaurants(
