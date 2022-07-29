@@ -1,6 +1,6 @@
-package com.foodies.dirtydiningapi.api;
+package com.foodies.dirtydining.controller;
 
-import com.foodies.dirtydiningapi.service.DirtyDiningService;
+import com.foodies.dirtydining.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 public class RestaurantController {
 
     @Autowired
-    private DirtyDiningService dirtyDiningService;
+    private RestaurantService restaurantService;
 
     @GetMapping
     @ResponseBody
@@ -22,7 +22,7 @@ public class RestaurantController {
             @RequestParam(defaultValue = "0") int offset,
             @RequestParam(defaultValue = "100") int row_count) {
 
-        return dirtyDiningService.getNearRestaurants(longitude, latitude, distance, offset, row_count);
+        return restaurantService.getNearRestaurants(longitude, latitude, distance, offset, row_count);
 
     }
 

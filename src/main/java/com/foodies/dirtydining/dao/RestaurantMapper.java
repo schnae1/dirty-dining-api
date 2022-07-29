@@ -1,12 +1,12 @@
-package com.foodies.dirtydiningapi.dao;
+package com.foodies.dirtydining.dao;
 
-import com.foodies.dirtydiningapi.model.Restaurant;
+import com.foodies.dirtydining.model.Restaurant;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RestaurantRowMapper implements RowMapper<Restaurant> {
+public class RestaurantMapper implements RowMapper<Restaurant> {
 
     public Restaurant mapRow(ResultSet rs, int rowNum) throws SQLException {
 

@@ -1,20 +1,20 @@
-package com.foodies.dirtydiningapi.service;
+package com.foodies.dirtydining.service;
 
-import com.foodies.dirtydiningapi.dao.RestaurantDao;
+import com.foodies.dirtydining.dao.IRestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-public class DirtyDiningService {
+public class RestaurantService {
 
     @Autowired
-    private RestaurantDao restaurantDao;
+    private IRestaurantRepository IRestaurantRepository;
 
     public Map<String, Object> getNearRestaurants(double longitude, double latitude, int distance, int offset, int row_count) {
 
-        return restaurantDao.getNearByRestaurants(longitude, latitude, distance, offset, row_count);
+        return IRestaurantRepository.getNearByRestaurants(longitude, latitude, distance, offset, row_count);
 
     }
 

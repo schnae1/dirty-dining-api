@@ -1,4 +1,4 @@
-package com.foodies.dirtydiningapi.model;
+package com.foodies.dirtydining.model;
 
 public class Restaurant {
 

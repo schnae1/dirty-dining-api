@@ -1,4 +1,4 @@
-package com.foodies.dirtydiningapi.utils;
+package com.foodies.dirtydining.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.foodies.dirtydiningapi.dao.RestaurantDao.*;
+import static com.foodies.dirtydining.dao.IRestaurantRepository.*;
 
 @Component
 public class Database {

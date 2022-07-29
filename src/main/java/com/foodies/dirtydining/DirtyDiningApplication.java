@@ -1,6 +1,6 @@
-package com.foodies.dirtydiningapi;
+package com.foodies.dirtydining;
 
-import com.foodies.dirtydiningapi.utils.Database;
+import com.foodies.dirtydining.util.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

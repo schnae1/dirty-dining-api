@@ -1,6 +1,6 @@
-package com.foodies.dirtydiningapi.dao;
+package com.foodies.dirtydining.dao;
 
-import com.foodies.dirtydiningapi.model.Restaurant;
+import com.foodies.dirtydining.model.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class RestaurantDataAccessService implements RestaurantDao {
+public class RestaurantRepository implements IRestaurantRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -21,12 +21,12 @@ public class RestaurantDataAccessService implements RestaurantDao {
         List<Restaurant> restaurants = jdbcTemplate.query(
                 SQL_GET_NEAREST_RESTAURANTS,
                 new Object[]{latitude, longitude, latitude, distance, offset, row_count},
-                new RestaurantRowMapper());
+                new RestaurantMapper());
 
         List<Restaurant> results = jdbcTemplate.query(
                 SQL_GET_RESULTS_COUNT,
                 new Object[]{latitude, longitude, latitude, distance},
-                new RestaurantRowMapper());
+                new RestaurantMapper());
         Integer resultCount = new Integer(results.size());
 
         Map<String, Object> response = new HashMap<String, Object>();

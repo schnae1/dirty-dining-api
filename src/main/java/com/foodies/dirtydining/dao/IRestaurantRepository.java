@@ -1,8 +1,8 @@
-package com.foodies.dirtydiningapi.dao;
+package com.foodies.dirtydining.dao;
 
 import java.util.Map;
 
-public interface RestaurantDao {
+public interface IRestaurantRepository {
 
     String RESTAURANTS_FILE_PATH = "/home/es/rest/restaurant_establishments.csv";
     int BATCH_SIZE = 50;
