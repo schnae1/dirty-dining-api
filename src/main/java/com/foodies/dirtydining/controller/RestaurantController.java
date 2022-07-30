@@ -2,6 +2,7 @@ package com.foodies.dirtydining.controller;
 
 import com.foodies.dirtydining.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -13,7 +14,9 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
-    // Test
+    @Value("${restaurant.data.url}")
+    private String restaurantDataUrl;
+
     @GetMapping
     @ResponseBody
     public Map<String, Object> getNearRestaurants(
@@ -25,6 +28,11 @@ public class RestaurantController {
 
         return restaurantService.getNearRestaurants(longitude, latitude, distance, offset, row_count);
 
+    }
+
+    @GetMapping("/test")
+    public String getURL() {
+        return restaurantDataUrl;
     }
 
 }

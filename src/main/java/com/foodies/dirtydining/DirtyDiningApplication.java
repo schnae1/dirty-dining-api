@@ -1,6 +1,6 @@
 package com.foodies.dirtydining;
 
-import com.foodies.dirtydining.util.Database;
+import com.foodies.dirtydining.util.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,15 +11,17 @@ import org.springframework.context.event.EventListener;
 public class DirtyDiningApplication {
 
 	@Autowired
-	Database database;
+	Data data;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DirtyDiningApplication.class, args);
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
-	public void populateDatabase() {
-		//populateDatabase.PopulateDB();
+	public void onStartUp() {
+		data.downloadData();
+		data.extractZippedFile();
+		//data.populateDB();
 	}
 
 }

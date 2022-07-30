@@ -1,23 +1,61 @@
 package com.foodies.dirtydining.util;
 
+import net.lingala.zip4j.ZipFile;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.foodies.dirtydining.dao.IRestaurantRepository.*;
 
 @Component
-public class Database {
+public class Data {
+
+    private final Logger logger = LoggerFactory.getLogger(Data.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void PopulateDB() {
+    @Value("${restaurant.data.url}")
+    private String restaurantDataUrl;
+
+    private static final String ZIP_FILE_PATH = "src/main/resources/data/restaurants.zip";
+    private static final String DESTINATION_PATH = "src/main/resources/data/";
+
+    public void downloadData() {
+
+        logger.info("Downloading zipped restaurant data...");
+
+        try {
+            FileUtils.copyURLToFile(new URL(restaurantDataUrl), new File(ZIP_FILE_PATH), 30000, 30000);
+            logger.info("Download complete.");
+        } catch (Exception ex) {
+            logger.error("Error while downloading zipped restaurant data.", ex);
+        }
+    }
+
+    public void extractZippedFile() {
+        logger.info("Extracting zipped files...");
+
+        try {
+            new ZipFile(ZIP_FILE_PATH).extractAll(DESTINATION_PATH);
+            logger.info("Extracted files successfully.");
+        } catch (Exception ex) {
+            logger.error("Error while extracting zipped filed.", ex);
+        }
+    }
+
+    public void populateDB() {
 
         System.out.println("Populating DB...");
 
