@@ -1,7 +1,13 @@
 package com.foodies.dirtydining.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("restaurants")
 public class Restaurant {
 
+    @Id
+    private String id;
     private String permitNumber;
     private String restaurantName;
     private String address;
@@ -11,8 +17,8 @@ public class Restaurant {
     private String cityName;
     private String zipCode;
     private String searchText;
-    private double distance;
-    private String state;
+    /*private double distance;
+    private String state;*/
 
     public Restaurant(
             String permitNumber,
@@ -23,11 +29,10 @@ public class Restaurant {
             int cityId,
             String cityName,
             String zipCode,
-            String searchText,
+            String searchText/*,
             double distance,
-            String state
+            String state*/
         ) {
-
         this.permitNumber = permitNumber;
         this.restaurantName = restaurantName;
         this.address = address;
@@ -37,9 +42,13 @@ public class Restaurant {
         this.cityName = cityName;
         this.zipCode = zipCode;
         this.searchText = searchText;
-        this.distance = distance;
-        this.state = state;
+        /*this.distance = distance;
+        this.state = state;*/
 
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getPermitNumber() {
@@ -78,11 +87,27 @@ public class Restaurant {
         return searchText;
     }
 
-    public double getDistance() {
+    /*public double getDistance() {
         return distance;
     }
 
     public String getState() {
         return state;
+    }*/
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "id='" + id + '\'' +
+                ", permitNumber='" + permitNumber + '\'' +
+                ", restaurantName='" + restaurantName + '\'' +
+                ", address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", cityId=" + cityId +
+                ", cityName='" + cityName + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", searchText='" + searchText + '\'' +
+                '}';
     }
 }

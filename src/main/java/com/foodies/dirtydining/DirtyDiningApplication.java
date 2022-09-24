@@ -19,9 +19,7 @@ public class DirtyDiningApplication {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void onStartUp() {
-		data.downloadData();
-		data.extractZippedFile();
-		//data.populateDB();
+		data.populateDB();
 	}
 
 }

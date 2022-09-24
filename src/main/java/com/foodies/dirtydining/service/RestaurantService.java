@@ -10,12 +10,10 @@ import java.util.Map;
 public class RestaurantService {
 
     @Autowired
-    private IRestaurantRepository IRestaurantRepository;
+    private IRestaurantRepository restaurantRepository;
 
     public Map<String, Object> getNearRestaurants(double longitude, double latitude, int distance, int offset, int row_count) {
-
-        return IRestaurantRepository.getNearByRestaurants(longitude, latitude, distance, offset, row_count);
-
+        return null;
     }
 
 }
