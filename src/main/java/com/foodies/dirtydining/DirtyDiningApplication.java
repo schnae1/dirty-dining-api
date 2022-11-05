@@ -19,6 +19,7 @@ public class DirtyDiningApplication {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void onStartUp() {
+		// TODO: Create a daily job to update db records
 		data.populateDB();
 	}
 
