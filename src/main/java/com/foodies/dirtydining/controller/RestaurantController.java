@@ -6,7 +6,14 @@ import com.foodies.dirtydining.service.RestaurantService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -28,9 +35,11 @@ public class RestaurantController {
     @GetMapping("/search")
     public RestaurantsResponse searchRestaurants(@RequestParam(value = "query") String query,
                                               @RequestParam(defaultValue = "0") Integer page,
-                                              @RequestParam(defaultValue = "10") Integer size) {
-        // TODO: Finish setting up pagination (validate working), clean up code and names and set up more fields to query on **
-        // START HERE ****
+                                              @RequestParam(defaultValue = "10") Integer size) throws MissingServletRequestParameterException {
+
+        if (StringUtils.isEmpty(query) || StringUtils.isEmpty(query.trim())) {
+            throw new MissingServletRequestParameterException("query", "String");
+        }
         return restaurantService.searchRestaurants(query, page, size);
     }
 
