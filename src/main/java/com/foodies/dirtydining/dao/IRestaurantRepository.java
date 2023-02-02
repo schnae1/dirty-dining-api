@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IRestaurantRepository {
 
-    String COLLECTION_NAME = "restaurants";
+    String COLLECTION_NAME = "restaurant";
 
     List<Restaurant> findRestaurantsNearBy(final double latitude, final double longitude);
 
