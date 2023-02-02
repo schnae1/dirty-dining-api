@@ -37,10 +37,23 @@ public class RestaurantRepository implements IRestaurantRepository {
 
     @Override
     public void updateOrInsertRestaurant(Restaurant restaurant) throws IllegalAccessException {
-        final Update update = createUpdate(restaurant);
-        Query query = new Query();
-        query.addCriteria(Criteria.where("permitNumber").is(restaurant.getPermitNumber()));
-        mongoTemplate.upsert(query, update, Restaurant.class);
+
+        final Query findQuery = new Query();
+        findQuery.addCriteria(Criteria.where("permitNumber").is(restaurant.getPermitNumber()));
+        final Restaurant existingRestaurant = mongoTemplate.findOne(findQuery, Restaurant.class);
+
+        if (existingRestaurant != null) {
+            if (!existingRestaurant.equals(restaurant)) {
+                final Query updateQuery = new Query();
+                updateQuery.addCriteria(Criteria.where("id").is(existingRestaurant.getId()));
+                final Update update = createUpdate(restaurant);
+                mongoTemplate.updateFirst(updateQuery, update, Restaurant.class);
+            }
+        } else {
+            final Query insertQuery = new Query();
+            insertQuery.addCriteria(Criteria.where("permitNumber").is(restaurant.getPermitNumber()));
+            mongoTemplate.insert(restaurant);
+        }
     }
 
     @Override

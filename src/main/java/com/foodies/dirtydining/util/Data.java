@@ -60,93 +60,110 @@ public class Data {
         logger.info("Files removed successfully.");
     }
 
-    public void populateDB() {
-        logger.info("Populating DB...");
+    public void initializeDB() {
+        try {
+            final boolean collectionExists = restaurantRepository.doesCollectionExist();
 
-        BufferedReader br = null;
-        String line = "";
-        List<Restaurant> restaurants = new ArrayList<>();
+            if (collectionExists) {
+                logger.info("Restaurant collection already exists.");
+            } else {
+                logger.info("Initializing Restaurant collection...");
 
+                downloadData();
+                extractZippedFile();
+
+                List<Restaurant> restaurants = new ArrayList<>();
+                String line = "";
+                BufferedReader br = new BufferedReader(new FileReader(RESTAURANTS_FILE_PATH));
+                final String[] headers = br.readLine().split(DELIMITER);
+                while ((line = br.readLine()) != null) {
+                    try {
+                        final Restaurant restaurant = createRestaurant(createDataMap(headers, line.split(DELIMITER)));
+                        restaurants.add(restaurant);
+                        if (restaurants.size() >= 1000) {
+                            restaurantRepository.insertRestaurants(restaurants);
+                            restaurants = new ArrayList<>();
+                        }
+                    } catch (Exception ex) {
+                        logger.error("Error while inserting record.", ex);
+                    }
+                }
+
+                if (restaurants.size() >= 1) {
+                    restaurantRepository.insertRestaurants(restaurants);
+                }
+                br.close();
+
+                removeFiles();
+                logger.info("Restaurant collection initialized successfully.");
+            }
+        } catch (Exception ex) {
+            logger.error("Error when initializing Restaurant collection.", ex);
+        }
+    }
+
+    public void updateDB() {
         try{
-
             downloadData();
             extractZippedFile();
 
-            // TODO: Revisit to see how to update records quickly without dropping collection and reinserting
-            final boolean collectionExists = restaurantRepository.doesCollectionExist();
-            if (collectionExists) {
-                logger.info("Dropping collection...");
-                restaurantRepository.dropCollection();
-                logger.info("Collection dropped successfully.");
-            }
+            logger.info("Updating Restaurant collection...");
 
-            br = new BufferedReader(new FileReader(RESTAURANTS_FILE_PATH));
+            String line = "";
+            BufferedReader br = new BufferedReader(new FileReader(RESTAURANTS_FILE_PATH));
             final String[] headers = br.readLine().split(DELIMITER);
             while ((line = br.readLine()) != null) {
-                final Restaurant restaurant = createRestaurant(createDataMap(headers, line.split(DELIMITER)));
-
-                restaurants.add(restaurant);
-
-                if (restaurants.size() >= 1000) {
-                    restaurantRepository.insertRestaurants(restaurants);
-                    restaurants = new ArrayList<>();
+                try {
+                    final Restaurant restaurant = createRestaurant(createDataMap(headers, line.split(DELIMITER)));
+                    restaurantRepository.updateOrInsertRestaurant(restaurant);
+                } catch (Exception ex) {
+                    logger.error("Error while updating/inserting record.", ex);
                 }
             }
-
-            if (restaurants.size() >= 1) {
-                restaurantRepository.insertRestaurants(restaurants);
-            }
-            logger.info("Finished populating db.");
             br.close();
             removeFiles();
+            logger.info("Updated Restaurant collection successfully.");
         } catch (Exception e) {
             logger.error("Error while populating database.", e);
         }
-
     }
 
     private Restaurant createRestaurant(Map<String, String> restaurantData) {
 
-        try{
-            // permit_number;facility_id;owner_id;PE;restaurant_name;location_name;address;latitude;
-            // longitude;city_id;city_name;zip_code;nciaa;plan_review;record_status;current_grade;
-            // current_demerits;date_current;previous_grade;date_previous;search_text;
-            final String permitNumber = restaurantData.get("permit_number").trim();
-            final String restaurantName = restaurantData.get("restaurant_name").trim();
-            final String address = restaurantData.get("address").trim();
-            final double latitude = Double.parseDouble(restaurantData.get("latitude") != null ? restaurantData.get("latitude") : "0");
-            final double longitude = Double.parseDouble(restaurantData.get("longitude") != null ? restaurantData.get("latitude") : "0");
-            final int cityId = Integer.parseInt(restaurantData.get("city_id") != null ? restaurantData.get("city_id") : "0");
-            final String cityName = restaurantData.get("city_name");
-            final String zipCode = restaurantData.get("zip_code");
-            final String currentGrade = restaurantData.get("current_grade");
-            final String currentDemerits = restaurantData.get("current_demerits");
-            final String dateCurrent = restaurantData.get("date_current");
-            final String previousGrade = restaurantData.get("previous_grade");
-            final String datePrevious = restaurantData.get("date_previous");
-            final String searchText = restaurantData.get("search_text");
+        // permit_number;facility_id;owner_id;PE;restaurant_name;location_name;address;latitude;
+        // longitude;city_id;city_name;zip_code;nciaa;plan_review;record_status;current_grade;
+        // current_demerits;date_current;previous_grade;date_previous;search_text;
+        final String permitNumber = restaurantData.get("permit_number").trim();
+        final String restaurantName = restaurantData.get("restaurant_name").trim();
+        final String address = restaurantData.get("address").trim();
+        final double latitude = Double.parseDouble(restaurantData.get("latitude") != null ? restaurantData.get("latitude") : "0");
+        final double longitude = Double.parseDouble(restaurantData.get("longitude") != null ? restaurantData.get("latitude") : "0");
+        final int cityId = Integer.parseInt(restaurantData.get("city_id") != null ? restaurantData.get("city_id") : "0");
+        final String cityName = restaurantData.get("city_name");
+        final String zipCode = restaurantData.get("zip_code");
+        final String currentGrade = restaurantData.get("current_grade");
+        final String currentDemerits = restaurantData.get("current_demerits");
+        final String dateCurrent = restaurantData.get("date_current");
+        final String previousGrade = restaurantData.get("previous_grade");
+        final String datePrevious = restaurantData.get("date_previous");
+        final String searchText = restaurantData.get("search_text");
 
-            return new Restaurant(
-                    permitNumber,
-                    restaurantName,
-                    address,
-                    latitude,
-                    longitude,
-                    cityId,
-                    cityName,
-                    zipCode,
-                    searchText,
-                    currentGrade,
-                    currentDemerits,
-                    dateCurrent,
-                    previousGrade,
-                    datePrevious
-            );
-        } catch (Exception e) {
-            logger.error("Error while creating restaurant: " + restaurantData.get("permit_number") + "-" + restaurantData.get("restaurant_name"), e);
-        }
-
-        return null;
+        return new Restaurant(
+                permitNumber,
+                restaurantName,
+                address,
+                latitude,
+                longitude,
+                cityId,
+                cityName,
+                zipCode,
+                searchText,
+                currentGrade,
+                currentDemerits,
+                dateCurrent,
+                previousGrade,
+                datePrevious
+        );
     }
 
     private Map<String, String> createDataMap(String[] headers, String[] data) {

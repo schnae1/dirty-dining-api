@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.TextScore;
 
+import java.util.Objects;
+
 @Document
 public class Restaurant {
 
@@ -136,5 +138,20 @@ public class Restaurant {
                 ", previousGrade='" + previousGrade + '\'' +
                 ", datePrevious='" + datePrevious + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Restaurant that = (Restaurant) o;
+        return Double.compare(that.latitude, latitude) == 0 && Double.compare(that.longitude, longitude) == 0
+                && cityId == that.cityId && Objects.equals(permitNumber, that.permitNumber)
+                && Objects.equals(restaurantName, that.restaurantName) && Objects.equals(address, that.address)
+                && Objects.equals(cityName, that.cityName) && Objects.equals(zipCode, that.zipCode)
+                && Objects.equals(searchText, that.searchText) && Objects.equals(currentGrade, that.currentGrade)
+                && Objects.equals(currentDemerits, that.currentDemerits) && Objects.equals(dateCurrent, that.dateCurrent)
+                && Objects.equals(previousGrade, that.previousGrade) && Objects.equals(datePrevious, that.datePrevious)
+                && Objects.equals(score, that.score);
     }
 }
