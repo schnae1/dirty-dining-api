@@ -7,6 +7,20 @@
 	},
 	"item": [
 		{
+			"name": "base-path",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}",
+					"host": [
+						"{{base_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "ping",
 			"event": [
 				{
