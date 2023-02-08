@@ -14,7 +14,7 @@ public class Scheduler {
     @Autowired
     private Data data;
 
-    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "0 0 9 * * ?")
     public void dailyPopulateDbJob() {
         logger.info("Daily cron job executing.");
 		data.updateDB();
