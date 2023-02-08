@@ -8,6 +8,19 @@
 	"item": [
 		{
 			"name": "base-path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"HTTP 200 STATUS CHECK\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -79,7 +92,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/api/v1/restaurant/search?query=tacos&page=1&size=10",
+					"raw": "{{base_url}}/api/v1/restaurant/search?query=tacos&page=0&size=10",
 					"host": [
 						"{{base_url}}"
 					],
@@ -96,7 +109,7 @@
 						},
 						{
 							"key": "page",
-							"value": "1"
+							"value": "0"
 						},
 						{
 							"key": "size",
