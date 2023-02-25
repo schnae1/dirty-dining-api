@@ -27,13 +27,13 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
-    @CrossOrigin(origins = "https://secure-falls-49267.herokuapp.com")
+    @CrossOrigin(origins = "https://ericsportfolio.site")
     @GetMapping("/{id}")
     public RestaurantResponse getRestaurantById(@PathVariable(value = "id") String id) {
         return restaurantService.getRestaurantById(id);
     }
 
-    @CrossOrigin(origins = "https://secure-falls-49267.herokuapp.com")
+    @CrossOrigin(origins = "https://ericsportfolio.site")
     @GetMapping("/search")
     public RestaurantsResponse searchRestaurants(@RequestParam(value = "query") String query,
                                               @RequestParam(defaultValue = "0") Integer page,
@@ -58,7 +58,7 @@ public class RestaurantController {
 
     }
 
-    @CrossOrigin(origins = "https://secure-falls-49267.herokuapp.com")
+    @CrossOrigin(origins = "https://ericsportfolio.site")
     @GetMapping("/ping")
     public String ping() {
         return "pong";
